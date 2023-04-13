@@ -10,18 +10,12 @@ void cb(struct ev_loop *, ev_io *w, int) {
 }
 
 event::event(factory *fact, type tp)
-  : _factory(fact)
+  : base_event(fact)
   , _type(tp) {}
 
-event::~event() {
-  if (_factory) {
-    _factory->_active_events.erase(this);
-  }
-}
-
 void event::stop() noexcept {
-  if (is_active() && _factory) {
-    ev_io_stop(_factory->_loop, &_io);
+  if (is_active() && get_loop()) {
+    ev_io_stop(get_loop(), &_io);
   }
 }
 
@@ -30,7 +24,7 @@ bool event::is_active() const noexcept {
 }
 
 bool event::start(int file_descriptor, std::function<void()> &&callback) noexcept {
-  if (!_factory)
+  if (!get_loop())
     return false;
   stop();
   switch (_type) {
@@ -45,7 +39,7 @@ bool event::start(int file_descriptor, std::function<void()> &&callback) noexcep
   }
   _io.data = this;
   _callback = std::move(callback);
-  ev_io_start(_factory->_loop, &_io);
+  ev_io_start(get_loop(), &_io);
   return true;
 }
 } // namespace bro::ev

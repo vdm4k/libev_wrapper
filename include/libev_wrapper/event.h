@@ -2,6 +2,7 @@
 #include <ev.h>
 #include <functional>
 #include <memory>
+#include "base_event.h"
 
 namespace bro::ev {
 
@@ -9,11 +10,9 @@ namespace bro::ev {
  *  @{
  */
 
-class factory;
-
 /*!\brief specific event
  */
-class event {
+class event : public base_event {
 public:
   /*!\brief event type
  */
@@ -23,30 +22,9 @@ public:
     e_read   ///< read
   };
 
-  /**
-   * \brief disabled copy ctor
-   */
-  event(event const &) = delete;
-
-  /**
-   * \brief disabled move ctor
-   */
-  event(event &&) = delete;
-
-  /**
-   * \brief disabled move assign operator
-   */
-  event &operator=(event &&) = delete;
-
-  /**
-   * \brief disabled assign operator
-   */
-  event &operator=(event const &) = delete;
-  ~event();
-
   /*! \brief stop event. if non active - do nothing
   */
-  void stop() noexcept;
+  void stop() noexcept override;
 
   /*! \brief check if event is active
   * \result true if active, false otherwise
@@ -70,7 +48,6 @@ private:
   friend void cb(struct ev_loop *, ev_io *w, int);
 
   ev_io _io{0, 0, 0, 0, 0, 0, 0, 0}; ///< current event
-  factory *_factory = nullptr;       ///< pointer on factory
   std::function<void()> _callback;   ///< callback to call
   type _type{type::e_none};          ///< type of event
 };

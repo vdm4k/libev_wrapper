@@ -5,12 +5,16 @@ set(H_FILES
     include/libev_wrapper/classic_api.h
     include/libev_wrapper/factory.h
     include/libev_wrapper/event.h
+    include/libev_wrapper/base_event.h
+    include/libev_wrapper/timer.h
 )
 
 set(CPP_FILES
     source/libev_wrapper/classic_api.cpp
     source/libev_wrapper/factory.cpp
     source/libev_wrapper/event.cpp
+    source/libev_wrapper/base_event.cpp
+    source/libev_wrapper/timer.cpp
 )
 
 include("${PROJECT_SOURCE_DIR}/third_party/libev.cmake")
@@ -35,3 +39,9 @@ if(WITH_SANITIZER)
 endif()
 
 target_link_libraries(${PROJECT_NAME} PUBLIC ev::ev)
+
+#examples
+option(WITH_EXAMPLES "Build examples" OFF)
+if(WITH_EXAMPLES)
+    add_subdirectory(examples)
+endif()

@@ -2,6 +2,7 @@
 #include <ev.h>
 #include <unordered_set>
 #include "event.h"
+#include "timer.h"
 
 namespace bro::ev {
 
@@ -54,12 +55,14 @@ public:
    * \note check type is in range from event::type::e_write to event::type::e_read,
    * if it's not return nullptr
    */
-  event_t generate_new_event(event::type type) noexcept;
+  event_t generate_new_event(event::type type);
+
+  timer_t generate_new_timer();
 
 private:
-  friend class event;
-  struct ev_loop *_loop = nullptr;            ///< pointer on main loop
-  std::unordered_set<event *> _active_events; ///< active events generated with this factory
+  friend class base_event;
+  struct ev_loop *_loop = nullptr;                 ///< pointer on main loop
+  std::unordered_set<base_event *> _active_events; ///< active events generated with this factory
 };
 
 } // namespace bro::ev

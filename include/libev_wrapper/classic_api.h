@@ -1,8 +1,5 @@
 #pragma once
 #include <ev.h>
-#include <functional>
-#include <memory>
-#include <unordered_set>
 
 namespace bro::ev {
 
