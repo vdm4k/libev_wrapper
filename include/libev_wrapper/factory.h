@@ -1,6 +1,5 @@
 #pragma once
 #include <ev.h>
-#include <memory>
 #include <unordered_set>
 #include "event.h"
 
@@ -55,7 +54,7 @@ public:
    * \note check type is in range from event::type::e_write to event::type::e_read,
    * if it's not return nullptr
    */
-  std::unique_ptr<event> generate_new_event(event::type type) noexcept;
+  event_t generate_new_event(event::type type) noexcept;
 
 private:
   friend class event;

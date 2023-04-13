@@ -6,7 +6,7 @@
 
 namespace bro::ev {
 
-/** @defgroup libev libev
+/** @defgroup libev_classic_api libev_classic_api
  *  @{
  */
 

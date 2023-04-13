@@ -18,7 +18,7 @@ void factory::proceed() noexcept {
   ev_loop(_loop, EVRUN_ONCE | EVRUN_NOWAIT);
 }
 
-std::unique_ptr<event> factory::generate_new_event(event::type type) noexcept {
+event_t factory::generate_new_event(event::type type) noexcept {
   if (event::type::e_read != type && event::type::e_write != type)
     return nullptr;
   auto new_event = std::unique_ptr<event>(new event(this, type));

@@ -1,6 +1,7 @@
 #pragma once
 #include <ev.h>
 #include <functional>
+#include <memory>
 
 namespace bro::ev {
 
@@ -73,5 +74,7 @@ private:
   std::function<void()> _callback;   ///< callback to call
   type _type{type::e_none};          ///< type of event
 };
+
+using event_t = std::unique_ptr<event>; ///< default pointer to hold event
 
 } // namespace bro::ev
