@@ -44,6 +44,7 @@ bool event::start(int file_descriptor, std::function<void()> &&callback) noexcep
   }
   _io.data = this;
   _callback = std::move(callback);
+  ev_io_start(_factory->_loop, &_io);
   return true;
 }
 } // namespace bro::ev
