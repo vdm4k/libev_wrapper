@@ -13,7 +13,7 @@ set(CPP_FILES
     source/libev_wrapper/event.cpp
 )
 
-include("${CMAKE_SOURCE_DIR}/third_party/libev.cmake")
+include("${PROJECT_SOURCE_DIR}/third_party/libev.cmake")
 
 add_library(${PROJECT_NAME} ${CPP_FILES} ${H_FILES})
 add_library(bro::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
