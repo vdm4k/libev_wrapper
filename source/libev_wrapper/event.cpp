@@ -32,6 +32,7 @@ bool event::is_active() const noexcept {
 bool event::start(int file_descriptor, std::function<void()> &&callback) noexcept {
   if (!_factory)
     return false;
+  stop();
   switch (_type) {
   case type::e_read:
     ev_io_init(&_io, cb, file_descriptor, EV_READ);
