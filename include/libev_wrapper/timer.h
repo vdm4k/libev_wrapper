@@ -17,6 +17,7 @@ class factory;
  */
 class timer : public event {
 public:
+  ~timer();
   /*! \brief stop timer. if non active - do nothing
   */
   void stop() noexcept override;

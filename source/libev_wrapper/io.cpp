@@ -9,6 +9,10 @@ void cb(struct ev_loop *, ev_io *w, int) {
   ev->_callback();
 }
 
+io::~io() {
+  io::stop();
+}
+
 io::io(factory *fact, type tp)
   : event(fact)
   , _type(tp) {}

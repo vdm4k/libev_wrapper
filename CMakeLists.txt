@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.14.0)
-project(libev_wrapper VERSION 0.9.0 DESCRIPTION "network library")
+project(libev_wrapper VERSION 0.9.1 DESCRIPTION "network library")
 
 set(H_FILES
     include/libev_wrapper/classic_api.h

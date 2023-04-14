@@ -22,6 +22,8 @@ public:
     e_read   ///< read
   };
 
+  ~io();
+
   /*! \brief stop event. if non active - do nothing
   */
   void stop() noexcept override;
