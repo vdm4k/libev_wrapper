@@ -4,16 +4,16 @@ project(libev_wrapper VERSION 0.9.0 DESCRIPTION "network library")
 set(H_FILES
     include/libev_wrapper/classic_api.h
     include/libev_wrapper/factory.h
+    include/libev_wrapper/io.h
     include/libev_wrapper/event.h
-    include/libev_wrapper/base_event.h
     include/libev_wrapper/timer.h
 )
 
 set(CPP_FILES
     source/libev_wrapper/classic_api.cpp
     source/libev_wrapper/factory.cpp
+    source/libev_wrapper/io.cpp
     source/libev_wrapper/event.cpp
-    source/libev_wrapper/base_event.cpp
     source/libev_wrapper/timer.cpp
 )
 

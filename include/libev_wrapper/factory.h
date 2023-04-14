@@ -1,7 +1,7 @@
 #pragma once
 #include <ev.h>
 #include <unordered_set>
-#include "event.h"
+#include "io.h"
 #include "timer.h"
 
 namespace bro::ev {
@@ -43,26 +43,26 @@ public:
 
   /*! \brief proceed event loop
    *
-   *  This function is a main funcion to generate/handle in/out events.
+   *  \note This function is a main funcion to generate/handle in/out events.
    *  Hence we need to call it periodically
    */
   void proceed() noexcept;
 
-  /*! \brief generate new events which assigned to this factory
+  /*! \brief generate new io event which assigned to this factory
    * \param [in] type of generated events (must be legal event::type)
-   * \result new event
-   *
-   * \note check type is in range from event::type::e_write to event::type::e_read,
-   * if it's not return nullptr
+   * \result pointer on a new event or nullptr if io::type not in range from event::type::e_write to event::type::e_read
    */
-  event_t generate_new_event(event::type type);
+  io_t generate_io(io::type type);
 
-  timer_t generate_new_timer();
+  /*! \brief generate new timer which assigned to this factory
+   * \result new timer
+   */
+  timer_t generate_timer();
 
 private:
-  friend class base_event;
-  struct ev_loop *_loop = nullptr;                 ///< pointer on main loop
-  std::unordered_set<base_event *> _active_events; ///< active events generated with this factory
+  friend class event;
+  struct ev_loop *_loop = nullptr;            ///< pointer on main loop
+  std::unordered_set<event *> _active_events; ///< active events generated with this factory
 };
 
 } // namespace bro::ev

@@ -3,7 +3,7 @@
 #include <functional>
 #include <memory>
 #include <chrono>
-#include "base_event.h"
+#include "event.h"
 
 namespace bro::ev {
 
@@ -13,9 +13,9 @@ namespace bro::ev {
 
 class factory;
 
-/*!\brief specific event
+/*!\brief timer event
  */
-class timer : public base_event {
+class timer : public event {
 public:
   /*! \brief stop timer. if non active - do nothing
   */
@@ -28,8 +28,10 @@ public:
 
   /*! \brief start timer
    * \param [in] timeout
-   * \param [in] callback call when expiered
+   * \param [in] callback call when the timer expiered
    * \result true
+   *
+   * \note precision millisecond only
    */
   bool start(std::chrono::milliseconds const &timeout, std::function<void()> &&callback) noexcept;
 

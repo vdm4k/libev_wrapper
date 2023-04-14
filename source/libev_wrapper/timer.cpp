@@ -10,7 +10,7 @@ void cb(struct ev_loop * /*loop*/, ev_timer *w, int /*revents*/) {
 }
 
 timer::timer(factory *fact)
-  : base_event(fact) {}
+  : event(fact) {}
 
 void timer::stop() noexcept {
   if (is_active() && get_loop()) {

@@ -3,11 +3,11 @@
 
 int main() {
   {
-    std::vector<bro::ev::event_t> events;
+    std::vector<bro::ev::io_t> events;
     {
       bro::ev::factory factory;
-      events.push_back(factory.generate_new_event(bro::ev::event::type::e_write));
-      events.push_back(factory.generate_new_event(bro::ev::event::type::e_read));
+      events.push_back(factory.generate_io(bro::ev::io::type::e_write));
+      events.push_back(factory.generate_io(bro::ev::io::type::e_read));
       factory.proceed();
     }
     for (auto &ev : events) {
@@ -20,9 +20,9 @@ int main() {
   {
     bro::ev::factory factory;
     {
-      std::vector<bro::ev::event_t> events;
-      events.push_back(factory.generate_new_event(bro::ev::event::type::e_write));
-      events.push_back(factory.generate_new_event(bro::ev::event::type::e_read));
+      std::vector<bro::ev::io_t> events;
+      events.push_back(factory.generate_io(bro::ev::io::type::e_write));
+      events.push_back(factory.generate_io(bro::ev::io::type::e_read));
       for (auto &ev : events) {
         ev->is_active();
         ev->start(2, []() {});
@@ -34,7 +34,7 @@ int main() {
 
   {
     bro::ev::factory factory;
-    auto timer = factory.generate_new_timer();
+    auto timer = factory.generate_timer();
     bool timer_fired = false;
     auto const start = std::chrono::system_clock::now();
     timer->start(std::chrono::milliseconds(1000), [&]() { timer_fired = true; });

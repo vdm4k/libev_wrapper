@@ -1,8 +1,4 @@
 #pragma once
-#include <ev.h>
-#include <functional>
-#include <memory>
-#include "base_event.h"
 
 namespace bro::ev {
 
@@ -10,48 +6,58 @@ namespace bro::ev {
  *  @{
  */
 
-/*!\brief specific event
- */
-class event : public base_event {
+class factory;
+
+/**
+  * \brief base class for all events
+  */
+class event {
 public:
-  /*!\brief event type
- */
-  enum class type {
-    e_none,  ///< not set
-    e_write, ///< write
-    e_read   ///< read
-  };
-
-  /*! \brief stop event. if non active - do nothing
-  */
-  void stop() noexcept override;
-
-  /*! \brief check if event is active
-  * \result true if active, false otherwise
-  */
-  bool is_active() const noexcept;
-
-  /*! \brief start event
-   * \param [in] file_descriptor file descriptor
-   * \param [in] callback which we call when event happened
-   * \result true
+  /**
+   * \brief ctor
+   * \param fact pointer on factory
    */
-  bool start(int file_descriptor, std::function<void()> &&callback) noexcept;
+  explicit event(factory *fact)
+    : _factory(fact) {}
+
+  virtual ~event();
+
+  /**
+   * \brief disabled copy ctor
+   */
+  event(event const &) = delete;
+
+  /**
+   * \brief disabled move ctor
+   */
+  event(event &&) = delete;
+
+  /**
+   * \brief disabled move assign operator
+   */
+  event &operator=(event &&) = delete;
+
+  /**
+   * \brief disabled assign operator
+   */
+  event &operator=(event const &) = delete;
+
+  /**
+   * \brief stop current event
+   */
+  virtual void stop() noexcept = 0;
+
+protected:
+  friend class factory;
+
+  /**
+   * \brief stop current event
+   * \return pointer on main loop
+   */
+  struct ev_loop *get_loop() const noexcept;
 
 private:
-  /*! \brief ctor
-   * \param [in] fact pointer on generate factory
-   * \param [in] type type of event
-  */
-  event(factory *fact, type tp);
-  friend class factory;
-  friend void cb(struct ev_loop *, ev_io *w, int);
-
-  ev_io _io{0, 0, 0, 0, 0, 0, 0, 0}; ///< current event
-  std::function<void()> _callback;   ///< callback to call
-  type _type{type::e_none};          ///< type of event
+  factory *_factory = nullptr; ///< pointer on factory
 };
-
-using event_t = std::unique_ptr<event>; ///< default pointer to hold event
 
 } // namespace bro::ev
