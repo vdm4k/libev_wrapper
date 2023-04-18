@@ -26,7 +26,7 @@ bool timer::is_active() const noexcept {
   return ev_is_active(&_io);
 }
 
-bool timer::start(std::chrono::milliseconds const &timeout, std::function<void()> &&callback) noexcept {
+bool timer::start(std::chrono::milliseconds const &timeout) noexcept {
   if (!get_loop())
     return false;
   stop();
@@ -37,7 +37,17 @@ bool timer::start(std::chrono::milliseconds const &timeout, std::function<void()
   _io.repeat = sec + millisec;
   _io.data = this;
   ev_timer_again(get_loop(), &_io);
+  return true;
+}
+
+void timer::set_callback(std::function<void()> &&callback) {
   _callback = std::move(callback);
+}
+
+bool timer::start(std::chrono::milliseconds const &timeout, std::function<void()> &&callback) {
+  if (!start(timeout))
+    return false;
+  set_callback(std::move(callback));
   return true;
 }
 } // namespace bro::ev

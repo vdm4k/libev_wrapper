@@ -27,7 +27,7 @@ bool io::is_active() const noexcept {
   return ev_is_active(&_io);
 }
 
-bool io::start(int file_descriptor, std::function<void()> &&callback) noexcept {
+bool io::start(int file_descriptor) noexcept {
   if (!get_loop())
     return false;
   stop();
@@ -42,8 +42,18 @@ bool io::start(int file_descriptor, std::function<void()> &&callback) noexcept {
     return false;
   }
   _io.data = this;
-  _callback = std::move(callback);
   ev_io_start(get_loop(), &_io);
+  return true;
+}
+
+void io::set_callback(std::function<void()> &&callback) {
+  _callback = std::move(callback);
+}
+
+bool io::start(int file_descriptor, std::function<void()> &&callback) {
+  if (!start(file_descriptor))
+    return false;
+  set_callback(std::move(callback));
   return true;
 }
 } // namespace bro::ev

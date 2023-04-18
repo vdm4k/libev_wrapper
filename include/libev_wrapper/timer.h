@@ -30,11 +30,24 @@ public:
   /*! \brief start timer
    * \param [in] timeout
    * \param [in] callback call when the timer expiered
-   * \result true
+   * \result true if timer started, false otherwise
    *
    * \note precision millisecond only
    */
-  bool start(std::chrono::milliseconds const &timeout, std::function<void()> &&callback) noexcept;
+  bool start(std::chrono::milliseconds const &timeout, std::function<void()> &&callback);
+
+  /*! \brief start timer
+   * \param [in] timeout
+   * \result true if timer started, false otherwise
+   *
+   * \note assume that we callback already set or will set before call proceed
+   */
+  bool start(std::chrono::milliseconds const &timeout) noexcept;
+
+  /*! \brief set callback to timer
+   * \param [in] callback call when the timer expiered
+   */
+  void set_callback(std::function<void()> &&callback);
 
 private:
   /*! \brief ctor

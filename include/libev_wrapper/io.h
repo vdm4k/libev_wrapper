@@ -36,9 +36,22 @@ public:
   /*! \brief start event
    * \param [in] file_descriptor file descriptor
    * \param [in] callback which we call when event happened
-   * \result true
+   * \result true if io started, false otherwise
    */
-  bool start(int file_descriptor, std::function<void()> &&callback) noexcept;
+  bool start(int file_descriptor, std::function<void()> &&callback);
+
+  /*! \brief start event
+   * \param [in] file_descriptor file descriptor
+   * \result true if io started, false otherwise
+   *
+   * \note assume that we callback already set or will set before call proceed
+   */
+  bool start(int file_descriptor) noexcept;
+
+  /*! \brief set callback to io
+   * \param [in] callback which we call when event happened
+   */
+  void set_callback(std::function<void()> &&callback);
 
 private:
   /*! \brief ctor
